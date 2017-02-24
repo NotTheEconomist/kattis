@@ -56,4 +56,26 @@ func main() {
 	}
 	// results is now full of populated Result objects
 
+	wrongAnswers := make(map[rune]int)
+	solvedProblems := make(map[rune]bool)
+	score := 0
+
+	for _, r := range results {
+		if r.correct {
+			if _, ok := solvedProblems[r.problem]; !ok {
+				score += r.minutes
+				solvedProblems[r.problem] = true
+			}
+		} else {
+			wrongAnswers[r.problem]++
+		}
+	}
+	for problem, count := range wrongAnswers {
+		if _, ok := solvedProblems[problem]; ok {
+			score += (count * 20)
+		}
+	}
+
+	fmt.Printf("%d %d\n", len(solvedProblems), score)
+
 }
